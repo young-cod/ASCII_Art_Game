@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AsciiArt
@@ -46,5 +47,13 @@ namespace AsciiArt
             }
         }
     }
+    static class Debug
+    {
+        public static void Log(Object value, int timer=0)
+        {
+            Console.WriteLine(value);
+            Thread.Sleep(timer*1000);
+        }
 
+    }
 }

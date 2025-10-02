@@ -14,21 +14,21 @@ namespace AsciiArt
             Left, Up,Right, Down,Check
         }
 
-        public static readonly string[] LeftArrow = new string[]{
+        static readonly string[] LeftArrow = new string[]{
             "  __     ",
             " / /____ ",
             "/ /_____|",
             "\\ \\_____|",
             " \\_\\     "
         };
-        public static readonly string[] UpArrow = new string[] {
+        static readonly string[] UpArrow = new string[] {
             "  ____  ",
             " / /\\ \\ ",
             "/_/ _\\_\\",
             "  || |  ",
             "  ||_|  "
         };
-        public static readonly string[] RightArrow = new string[] {
+        static readonly string[] RightArrow = new string[] {
             "     __  ",
             " ____\\ \\ ",
             "|_____\\ \\",
@@ -36,7 +36,7 @@ namespace AsciiArt
             "     /_/ "
         };
         
-        public static readonly string[] DownArrow = new string[] {
+        static readonly string[] DownArrow = new string[] {
             "   _    ",
             "  | ||  ",
             " _|_||_ ",
@@ -52,5 +52,18 @@ namespace AsciiArt
             " \\ V / ",
             "  \\_/  "
         };
+
+        public static string[] GetArrowData(ArrowData.EType type)
+        {
+            switch (type)
+            {
+                case EType.Left: return LeftArrow;
+                case EType.Up: return UpArrow;
+                case EType.Right: return RightArrow;
+                case EType.Down: return DownArrow;
+            }
+
+            return null;
+        }
     }
 }

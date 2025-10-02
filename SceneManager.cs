@@ -62,7 +62,7 @@ namespace AsciiArt
             for (int i = 0; i < Console.WindowHeight; i++) // 세로 한 줄씩
             {
                 Console.SetCursorPosition(0, i);                       // 줄 시작 위치
-                Console.Write(new string(' ', Console.WindowWidth));   // 공백으로 채우기
+                Console.Write(new string(' ', ScreenBuffer.WIN_MAX_WIDTH));   // 공백으로 채우기
             }
             Console.SetCursorPosition(0, 0); // 커서 원점으로 이동
         }

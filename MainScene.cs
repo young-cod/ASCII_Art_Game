@@ -9,7 +9,7 @@ namespace AsciiArt
 {
     class MainScene : Scene, IInputHandler
     {
-        public enum EMENU { Playing, ArtBook, Achievement, End, count }
+        public enum EMENU { None, Playing, ArtBook, Achievement, End, count }
         EMENU Menu { get; set; }
         readonly string[] title = new string[] {
 " _____                                                                                                  _____ ",
@@ -55,7 +55,7 @@ namespace AsciiArt
                     if (Menu < EMENU.count - 1) Menu++;
                     break;
                 case ConsoleKey.Enter:
-                    SceneManager.Instance.LoadScene((Scene.EType)Menu + 1);
+                    SceneManager.Instance.LoadScene((Scene.EType)Menu);
                     break;
             }
         }
