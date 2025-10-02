@@ -42,10 +42,10 @@ namespace AsciiArt
         int endPosY;
 
         //인풋핸들러
-        public bool IsHandlerInput => true;
 
         public void HandleInput(ConsoleKeyInfo keyInfo)
         {
+            SceneManager.Instance.ClearScreenByFilling();
             switch (keyInfo.Key)
             {
                 case ConsoleKey.UpArrow:
@@ -55,10 +55,9 @@ namespace AsciiArt
                     if (Menu < EMENU.count - 1) Menu++;
                     break;
                 case ConsoleKey.Enter:
-                    SceneManager.Instance.LoadScene((Scene.ETYPE)Menu+1);
+                    SceneManager.Instance.LoadScene((Scene.EType)Menu + 1);
                     break;
             }
-            SceneManager.Instance.ClearScreenByFilling();
         }
 
         private int GetMenuPosY(EMENU menu)
@@ -76,6 +75,7 @@ namespace AsciiArt
         public override void Init()
         {
             Menu = EMENU.Playing;
+            Type = EType.Main;
 
             selectPosY = title.Length + 15;
             startPosY = selectPosY;
@@ -89,14 +89,15 @@ namespace AsciiArt
         public override void Render()
         {
             //타이틀 아스키아트 렌더링
-            for (int i = 0; i < title.Length; i++)
-            {
-                Tools.WriteLineAt(Tools.GetCenterPosX(title[i]), 7 + i, title[i]);
-            }
+            Tools.ArtLineAllRenderAt(Tools.GetCenterPosX(title[0]), 10, title);
+            //ScreenBuffer.Draw(Tools.GetCenterPosX(title[0]), 7, title);
 
-            int windowCenterX = Console.WindowWidth / 2 - 4;
+            int windowCenterX = ScreenBuffer.WIN_MAX_WIDTH / 2 - 4;
 
             //선택된 문자열 위치 렌더링
+            //ScreenBuffer.Draw(windowCenterX-10, GetMenuPosY(Menu), selectStr[0]);
+            //ScreenBuffer.Draw(windowCenterX+15, GetMenuPosY(Menu), selectStr[1]);
+
             Tools.WriteAt(windowCenterX - 10, GetMenuPosY(Menu), selectStr[0]);
             Tools.WriteAt(windowCenterX + 15, GetMenuPosY(Menu), selectStr[1]);
 
@@ -111,6 +112,7 @@ namespace AsciiArt
 
             //끝내기 문자열 위치 렌더링
             Tools.WriteLineAt(windowCenterX, endPosY, endString);
+
         }
     }
 }

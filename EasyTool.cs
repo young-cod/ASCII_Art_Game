@@ -16,8 +16,9 @@ namespace AsciiArt
 
             return (window_width / 2) - (str.Length / 2);
         }
-        
-        public static void WriteLineAt(int x, int y, string str = ""){
+
+        public static void WriteLineAt(int x, int y, string str = "")
+        {
             Console.SetCursorPosition(x, y);
             Console.WriteLine(str);
         }
@@ -25,6 +26,24 @@ namespace AsciiArt
         {
             Console.SetCursorPosition(x, y);
             Console.Write(str);
+        }
+
+        /// <summary>
+        /// (x,y)위치에 아트디자인 출력
+        /// </summary>
+        /// <param name="x">x축</param>
+        /// <param name="y">y축</param>
+        /// <param name="artLine"></param>
+        public static void ArtLineAllRenderAt(int x, int y, string[] artLine)
+        {
+            int artHeight = artLine.Length;
+            for (int i = 0; i < artHeight; i++)
+            {
+                //Console.SetCursorPosition(x, i + y);
+                //Console.WriteLine(artLine[i]);
+
+                WriteLineAt(x, i + y, artLine[i]);
+            }
         }
     }
 

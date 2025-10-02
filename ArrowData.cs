@@ -9,14 +9,11 @@ namespace AsciiArt
 {
     internal static class ArrowData
     {
-        //오른쪽 화살표
-        public static readonly string[] RightArrow = new string[] {
-            "     __  ",
-            " ____\\ \\ ",
-            "|_____\\ \\",
-            "|_____/ /",
-            "     /_/ "
-        };
+        public enum EType
+        {
+            Left, Up,Right, Down,Check
+        }
+
         public static readonly string[] LeftArrow = new string[]{
             "  __     ",
             " / /____ ",
@@ -31,6 +28,14 @@ namespace AsciiArt
             "  || |  ",
             "  ||_|  "
         };
+        public static readonly string[] RightArrow = new string[] {
+            "     __  ",
+            " ____\\ \\ ",
+            "|_____\\ \\",
+            "|_____/ /",
+            "     /_/ "
+        };
+        
         public static readonly string[] DownArrow = new string[] {
             "   _    ",
             "  | ||  ",

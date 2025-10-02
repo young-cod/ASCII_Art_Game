@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArrowData.cs" />
+    <Compile Include="ArrowGame.cs" />
     <Compile Include="Art.cs" />
     <Compile Include="ArtManager.cs" />
     <Compile Include="EasyTool.cs" />
@@ -51,11 +53,12 @@
     <Compile Include="InputManager.cs" />
     <Compile Include="MainScene.cs" />
     <Compile Include="Pokemon.cs" />
-    <Compile Include="PokemonArt.cs" />
+    <Compile Include="PokemonData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="SceneManager.cs" />
+    <Compile Include="ScreenBuffer.cs" />
     <Compile Include="Singleton.cs" />
   </ItemGroup>
   <ItemGroup>

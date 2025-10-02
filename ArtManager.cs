@@ -8,5 +8,6 @@ namespace AsciiArt
 {
     internal class ArtManager
     {
+        
     }
 }

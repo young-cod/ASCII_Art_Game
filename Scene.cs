@@ -10,9 +10,17 @@ namespace AsciiArt
 {
     abstract class Scene
     {
-        public enum ETYPE { Main, Game, ArtBook, DetailArtBook, Achievement }
+        //씬 타입
+        public enum EType { Main, Game, ArtBook, DetailArtBook, Achievement }
+        public EType Type { get; protected set; }
 
         abstract public void Render();
+
+       
+        /// <summary>
+        /// 1. 씬 초기화하기(clear) 
+        /// 2.씬 타입(Scene.EType)이 뭔지 정하기
+        /// 3. 인풋핸들러 세팅해주기</summary>
         abstract public void Init();
 
     }

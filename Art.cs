@@ -7,35 +7,30 @@ using System.Threading.Tasks;
 
 namespace AsciiArt
 {
-    enum EARTTYPE
+    enum ArtDiscoveryState{
+        Locked, Discovered
+    }
+
+    enum ArtType
     {
         Pokemon, Digimon
     }
 
     abstract class Art
     {
-        enum Pokemon {Pikachu,Namobbemi,count }
-        enum Digimon {count }
-
-        public string[] BlurArt { get; set; }
         public int WIDTH { get; }
         public int HEIGHT { get; }
 
-        public Art(string[] data)
-        {
-            if (data == null || data.Length == 0)
-            {
-                WIDTH = 0;
-                HEIGHT = 0;
-            }
-            else
-            {
-                //가장 긴 라인 너비로
-                WIDTH = data.Max(line => line.Length);
-                HEIGHT = data.Length;
-            }
-        }
+        public string Name { get; }
+        public int UnlockScore { get; }
+        public string[] ArtLine { get; }
 
-        abstract public string[] GetBlurArt();
+        public ArtDiscoveryState State { get; set; } = ArtDiscoveryState.Locked;
+
+        public Art(string name, int unlockScore, string[] artLine){
+            Name = name;
+            UnlockScore = unlockScore;
+            ArtLine = artLine;
+        }
     }
 }

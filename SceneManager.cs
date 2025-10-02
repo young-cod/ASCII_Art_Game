@@ -13,37 +13,37 @@ namespace AsciiArt
     internal class SceneManager : Singleton<SceneManager>
     {
         public Scene CurrentScene { get; set; }
-        Scene.ETYPE currentState = Scene.ETYPE.Main;
 
         public override void Init()
         {
             MainScene main = new MainScene();
             CurrentScene = main;
-            currentState = Scene.ETYPE.Main;
             CurrentScene.Init();
         }
 
-        public void LoadScene(Scene.ETYPE scene)
+        public void LoadScene(Scene.EType type)
         {
+            Console.Clear();
+
             //이전 씬 정리
             InputManager.Instance.SetHandler(null);
 
-
             //현재 씬 변경
-            CurrentScene = GetScene(scene);
+            CurrentScene = GetScene(type);
 
+            
             //씬 initiailize
             CurrentScene.Init();
         }
 
-        private Scene GetScene(Scene.ETYPE type){
+        private Scene GetScene(Scene.EType type){
             switch (type)
             {
-                case Scene.ETYPE.Main:return new MainScene();
-                case Scene.ETYPE.Game:return new GameScene();
-                case Scene.ETYPE.ArtBook:
-                case Scene.ETYPE.DetailArtBook:
-                case Scene.ETYPE.Achievement:
+                case Scene.EType.Main:return new MainScene();
+                case Scene.EType.Game:return new GameScene();
+                case Scene.EType.ArtBook:
+                case Scene.EType.DetailArtBook:
+                case Scene.EType.Achievement:
                 default:
                     return null;
             }
@@ -53,9 +53,8 @@ namespace AsciiArt
 
         public void Render()
         {
-            //ClearScreenByFilling();
-
             CurrentScene.Render();
+            ScreenBuffer.Flip();
         }
         // 화면 지우기 (빈 문자로 채우기)
         public void ClearScreenByFilling()

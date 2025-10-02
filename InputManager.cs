@@ -17,20 +17,19 @@ namespace AsciiArt
     {
         public IInputHandler currentHandler;
 
-        public bool IsHandlerInput{ get; }
-
         public void SetHandler(IInputHandler handler){
             this.currentHandler = handler;
         }  
 
         public void ProcessInput(){
-            if(currentHandler == null){
+            if(currentHandler == null ){
                 return;
             }
 
             //키 입력이 있으면
             if(Console.KeyAvailable){
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey(false);
                 currentHandler.HandleInput(keyInfo);
             }
         }
