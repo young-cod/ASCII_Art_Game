@@ -46,11 +46,11 @@ namespace AsciiArt
 
         //체크 표시
         public static readonly string[] Check = new string[]{
-            "      __",
-            "__   / /",
-            "\\ \\ / /",
-            " \\ V / ",
-            "  \\_/  "
+            "      __  ",
+            "__   / /  ",
+            "\\ \\ / /  ",
+            " \\ V /   ",
+            "  \\_/    "
         };
 
         public static string[] GetArrowData(ArrowData.EType type)

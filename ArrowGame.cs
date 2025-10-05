@@ -13,8 +13,8 @@ namespace AsciiArt
     internal class ArrowGame
     {
         //초기 생성 개수
-        const int CREATECOUNT = 8;
-        const int LINE_MAXCOUNT = 8;
+        const int CREATECOUNT = 16;
+        public const int LINE_MAXCOUNT = 8;
 
         //todo : 레벨, 난이도, 점수 세팅하기
         public int Level { get; private set; }

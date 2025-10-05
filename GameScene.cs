@@ -17,6 +17,10 @@ namespace AsciiArt
         const int TIMERPOSY = 2;
         const int ARROWGAP = 10;
         const int ARROW_START_POSX = 5;
+        const int ARROW_START_POSY = 5;
+
+        readonly int gameArea_Width;
+        readonly int artArea_Width;
 
         Queue<ArrowData.EType> arrowQueue = new Queue<ArrowData.EType>();
         ArrowGame arrowGame;
@@ -71,9 +75,9 @@ namespace AsciiArt
             GameArea();
 
             //구분선
-            for (int i = 1; i < ScreenBuffer.WIN_MAX_HEIGHT - 2; i++)
+            for (int i = 2; i < ScreenBuffer.WIN_MAX_HEIGHT - 4; i++)
             {
-                Tools.WriteLineAt(ScreenBuffer.WIN_MAX_WIDTH / 2 - 10, i, "|");
+                //Tools.WriteLineAt(ScreenBuffer.WIN_MAX_WIDTH / 2 - 10, i, "|");
             }
 
             ArtArea();
@@ -105,20 +109,32 @@ namespace AsciiArt
                 //ScreenBuffer.Draw(5, 5, ArrowData.LeftArrow);
 
                 //화살표 리스트 출력
+                int posY = ARROW_START_POSY;
                 for (int i = 0; i < GameManager.Instance.arrowList.Count; i++)
                 {
                     //Debug.Log(GameManager.Instance.arrowList.Count,2);
                     ArrowData.EType type = GameManager.Instance.arrowList[i];
-                    int posX = ARROW_START_POSX + (i * ARROWGAP);
-                    ScreenBuffer.Draw(posX, 5, ArrowData.GetArrowData(type));
+                    int posX = ARROW_START_POSX + ((i % ArrowGame.LINE_MAXCOUNT) * ARROWGAP);
+                    if (i != 0 && i % ArrowGame.LINE_MAXCOUNT == 0)
+                    {
+                        posY += ARROW_START_POSY;
+                    }
+                    //Debug.Log($"{posX},{posY}");
+                    ScreenBuffer.Draw(posX, posY, ArrowData.GetArrowData(type));
                 }
 
-               
+                Console.WriteLine(arrowGame.Answer);
 
                 //체크 리스트 출력
+                int posCheckY = ARROW_START_POSY;
                 for (int i = 0; i < arrowGame.Answer; i++)
                 {
-                    ScreenBuffer.Draw(ARROW_START_POSX + (i * ARROWGAP), 5, ArrowData.Check);
+                    int posX = ARROW_START_POSX + ((i % ArrowGame.LINE_MAXCOUNT) * ARROWGAP);
+                    if (i != 0 && i % ArrowGame.LINE_MAXCOUNT == 0)
+                    {
+                        posCheckY += ARROW_START_POSY;
+                    }
+                    ScreenBuffer.Draw(posX, posCheckY, ArrowData.Check);
                 }
             }
         }
