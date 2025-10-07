@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AsciiArt
+﻿namespace AsciiArt
 {
     internal static class ArrowData
     {
@@ -45,12 +38,20 @@ namespace AsciiArt
         };
 
         //체크 표시
-        public static readonly string[] Check = new string[]{
+        public static readonly string[] Success = new string[]{
             "      __  ",
             "__   / /  ",
             "\\ \\ / /  ",
             " \\ V /   ",
             "  \\_/    "
+        };
+
+        public static readonly string[] Fail = new string[]{
+            "__  __",
+            "\\ \\/ /",
+            " \\  / ",
+            " /  \\ ",
+            "/_/\\_\\"
         };
 
         public static string[] GetArrowData(ArrowData.EType type)

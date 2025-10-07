@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Schema;
+using System.Threading;
 
 namespace AsciiArt
 {
@@ -44,7 +37,6 @@ namespace AsciiArt
             {
                 return;
             }
-
             switch (keyInfo.Key)
             {
                 case ConsoleKey.LeftArrow:
@@ -60,7 +52,7 @@ namespace AsciiArt
                     else
                     {
                         //게임 오버
-                        GameManager.Instance.State = GameManager.EGameState.GameOver;
+                        SceneManager.Instance.LoadScene(EType.GameOver);
                     }
                     break;
                 case ConsoleKey.Escape:
@@ -75,9 +67,9 @@ namespace AsciiArt
             GameArea();
 
             //구분선
-            for (int i = 2; i < ScreenBuffer.WIN_MAX_HEIGHT - 4; i++)
+            for (int i = 2; i < ScreenBuffer.currentH - 2; i++)
             {
-                //Tools.WriteLineAt(ScreenBuffer.WIN_MAX_WIDTH / 2 - 10, i, "|");
+                Tools.WriteLineAt(ScreenBuffer.currentW/ 2 - 4, i, "|");
             }
 
             ArtArea();
@@ -90,7 +82,8 @@ namespace AsciiArt
             if (GameManager.Instance.State != GameManager.EGameState.Playing)
             {
                 float startTimer = ArrowGame.ReadyTimer - (arrowGame.watch.ElapsedMilliseconds / 1000.0f);
-                Tools.WriteLineAt(TIMERPOSX, TIMERPOSY, $"{startTimer:0.0}초 후 게임이 시작됩니다.");
+                //Tools.WriteLineAt(TIMERPOSX, TIMERPOSY, $"{startTimer:0.0}초 후 게임이 시작됩니다.");
+                ScreenBuffer.Draw(TIMERPOSX, TIMERPOSY, $"{startTimer:0.0}초 후 게임이 시작됩니다.");
 
                 //게임 시작
                 if (startTimer <= 0)
@@ -105,6 +98,7 @@ namespace AsciiArt
             {
                 float endTimer = ArrowGame.GameOverTimer - (arrowGame.watch.ElapsedMilliseconds / 1000.0f);
                 Tools.WriteLineAt(TIMERPOSX, TIMERPOSY, $"남은 시간 : {endTimer:0.0}");
+                //ScreenBuffer.Draw(TIMERPOSX, TIMERPOSY, $"남은 시간 : {endTimer:0.0}");
 
                 //ScreenBuffer.Draw(5, 5, ArrowData.LeftArrow);
 
@@ -120,10 +114,13 @@ namespace AsciiArt
                         posY += ARROW_START_POSY;
                     }
                     //Debug.Log($"{posX},{posY}");
+                    //Console.ForegroundColor = ConsoleColor.Red;
+                    //Tools.ArtLineAllRenderAt(posX, posY, ArrowData.GetArrowData(type));
                     ScreenBuffer.Draw(posX, posY, ArrowData.GetArrowData(type));
+                    //Console.ResetColor();
                 }
 
-                Console.WriteLine(arrowGame.Answer);
+                //Debug.Log(arrowGame.Answer);
 
                 //체크 리스트 출력
                 int posCheckY = ARROW_START_POSY;
@@ -134,7 +131,10 @@ namespace AsciiArt
                     {
                         posCheckY += ARROW_START_POSY;
                     }
-                    ScreenBuffer.Draw(posX, posCheckY, ArrowData.Check);
+                    //Console.ForegroundColor = ConsoleColor.Green;
+                    //Tools.ArtLineAllRenderAt(posX, posCheckY, ArrowData.Check);
+                    ScreenBuffer.Draw(posX, posCheckY, ArrowData.Success,ConsoleColor.Green);
+                    //Console.ResetColor();
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace AsciiArt
             int height = PokemonData.AllPokemon["Namolbbami"].ArtLine.Length;
             for (int i = 2; i < height + 2; i++)
             {
-                Tools.WriteLineAt(ScreenBuffer.WIN_MAX_WIDTH / 2 - 5, i, artLine[i]);
+                Tools.WriteLineAt(ScreenBuffer.currentW / 2 - 5, i, artLine[i]);
 
             }
         }

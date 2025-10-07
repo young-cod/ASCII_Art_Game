@@ -91,7 +91,7 @@ namespace AsciiArt
             bool result = false;
             int typeNum = input - ConsoleKey.LeftArrow;
             Console.SetCursorPosition(0, 5);
-            Console.WriteLine($"{(int)queue.Peek()},{typeNum}");
+            //Debug.Log($"{(int)queue.Peek()},{typeNum}");
             result = (int)queue.Peek() == input - ConsoleKey.LeftArrow ? true : false;
             if (result)
             {

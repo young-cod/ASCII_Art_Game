@@ -27,6 +27,7 @@ namespace AsciiArt
 
             //이전 씬 정리
             InputManager.Instance.SetHandler(null);
+            CurrentScene = null;
 
             //현재 씬 변경
             CurrentScene = GetScene(type);
@@ -44,6 +45,7 @@ namespace AsciiArt
                 case Scene.EType.ArtBook:
                 case Scene.EType.DetailArtBook:
                 case Scene.EType.Achievement:
+                case Scene.EType.GameOver: return new GameOverScene();
                 default:
                     return null;
             }
@@ -56,13 +58,18 @@ namespace AsciiArt
             CurrentScene.Render();
             ScreenBuffer.Flip();
         }
+
+        public void Update(){
+            CurrentScene.Update();    
+        }
+
         // 화면 지우기 (빈 문자로 채우기)
         public void ClearScreenByFilling()
         {
             for (int i = 0; i < Console.WindowHeight; i++) // 세로 한 줄씩
             {
                 Console.SetCursorPosition(0, i);                       // 줄 시작 위치
-                Console.Write(new string(' ', ScreenBuffer.WIN_MAX_WIDTH));   // 공백으로 채우기
+                Console.Write(new string(' ', ScreenBuffer.currentW));   // 공백으로 채우기
             }
             Console.SetCursorPosition(0, 0); // 커서 원점으로 이동
         }

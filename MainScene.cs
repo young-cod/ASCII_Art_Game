@@ -92,7 +92,7 @@ namespace AsciiArt
             Tools.ArtLineAllRenderAt(Tools.GetCenterPosX(title[0]), 10, title);
             //ScreenBuffer.Draw(Tools.GetCenterPosX(title[0]), 7, title);
 
-            int windowCenterX = ScreenBuffer.WIN_MAX_WIDTH / 2 - 4;
+            int windowCenterX = ScreenBuffer.currentW / 2 - 4;
 
             //선택된 문자열 위치 렌더링
             //ScreenBuffer.Draw(windowCenterX-10, GetMenuPosY(Menu), selectStr[0]);
