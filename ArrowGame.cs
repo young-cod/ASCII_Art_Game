@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO.Ports;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AsciiArt
 {
@@ -18,13 +12,65 @@ namespace AsciiArt
 
         //todo : 레벨, 난이도, 점수 세팅하기
         public int Level { get; private set; }
+
+        //<레벨,<화살표개수, 타이머>>
+        public Dictionary<int, Tuple<int, float>> dicLevelCount = new Dictionary<int, Tuple<int, float>>()
+        {
+            // 초급 (1-10)
+            { 1, new Tuple<int, float>(3, 7.0f) },
+            { 2, new Tuple<int, float>(4, 6.5f) },
+            { 3, new Tuple<int, float>(4, 6.0f) },
+            { 4, new Tuple<int, float>(5, 6.0f) },
+            { 5, new Tuple<int, float>(5, 5.5f) },
+            { 6, new Tuple<int, float>(6, 5.5f) },
+            { 7, new Tuple<int, float>(6, 5.0f) },
+            { 8, new Tuple<int, float>(7, 5.0f) },
+            { 9, new Tuple<int, float>(7, 4.5f) },
+            { 10, new Tuple<int, float>(8, 4.0f) },
+
+            // 중급 (11-20)
+            { 11, new Tuple<int, float>(9, 4.0f) },
+            { 12, new Tuple<int, float>(10, 4.0f) },
+            { 13, new Tuple<int, float>(11, 3.8f) },
+            { 14, new Tuple<int, float>(12, 3.8f) },
+            { 15, new Tuple<int, float>(13, 3.5f) },
+            { 16, new Tuple<int, float>(14, 3.5f) },
+            { 17, new Tuple<int, float>(15, 3.2f) },
+            { 18, new Tuple<int, float>(16, 3.2f) },
+            { 19, new Tuple<int, float>(17, 3.0f) },
+            { 20, new Tuple<int, float>(18, 3.0f) },
+
+            // 고급 (21-30)
+            { 21, new Tuple<int, float>(20, 2.8f) },
+            { 22, new Tuple<int, float>(22, 2.8f) },
+            { 23, new Tuple<int, float>(24, 2.6f) },
+            { 24, new Tuple<int, float>(26, 2.6f) },
+            { 25, new Tuple<int, float>(28, 2.4f) },
+            { 26, new Tuple<int, float>(30, 2.4f) },
+            { 27, new Tuple<int, float>(32, 2.2f) },
+            { 28, new Tuple<int, float>(34, 2.2f) },
+            { 29, new Tuple<int, float>(36, 2.0f) },
+            { 30, new Tuple<int, float>(38, 2.0f) },
+
+            // 최상급 (31-40)
+            { 31, new Tuple<int, float>(38, 1.8f) },
+            { 32, new Tuple<int, float>(38, 1.7f) },
+            { 33, new Tuple<int, float>(39, 1.7f) },
+            { 34, new Tuple<int, float>(39, 1.6f) },
+            { 35, new Tuple<int, float>(40, 1.6f) },
+            { 36, new Tuple<int, float>(40, 1.5f) },
+            { 37, new Tuple<int, float>(40, 1.4f) },
+            { 38, new Tuple<int, float>(40, 1.3f) },
+            { 39, new Tuple<int, float>(40, 1.2f) },
+            { 40, new Tuple<int, float>(40, 1.1f) }
+        };
         public int Score { get; private set; }
 
         //게임 시작 준비시간
-        public const float ReadyTimer = 0f;
+        public const float ReadyTimer = 5f;
         public const float GameOverTimer = 5f;
         public const float GameEndTimer = 60f;
-        
+
         //todo : 한 입력마다 제한시간을 둘것인지?
         //아니면 모든 리스트를 제한시간안에 다 풀것인지?
         //아니면 두개 다 둘것인지
@@ -43,38 +89,39 @@ namespace AsciiArt
         {
             Level = level;
             Score = 0;
-            Timer = 0f;
+            Timer = dicLevelCount[level].Item2;
         }
 
         public void Init()
         {
             watch.Start();
 
-            Timer = 0f;
-            Score = 0;
-            Level = 1;
-
             //초반 게임 세팅
             //추후 도감작에 따라 초반 레벨(난이도) 변경해야함
-            Random rnd = new Random();
-
-            int idx = 0;
-            for (int i = 0; i < CREATECOUNT; i++)
-            {
-                idx++;
-                //레프트, 업, 라이트, 다운
-                queue.Enqueue((ArrowData.EType)rnd.Next(0, 4));
-            }
-
-            GameManager.Instance.SetArrowList(queue);
+            SetLevel(1);
         }
 
 
         //레벨당 몇개의 화살표를 뱉을건지?
         //한줄당 최대 8개가 나오도록
-        public void ChangeLevel()
+        public void SetLevel(int lvl)
         {
+            Level = lvl;
+            
+            int arrowCnt = dicLevelCount[Level].Item1;
+            Timer = dicLevelCount[Level].Item2;
+            Answer = 0;
+            watch.Restart();
 
+            Random rnd = new Random();
+
+            for (int i = 0; i < arrowCnt; i++)
+            {
+                //레프트, 업, 라이트, 다운
+                queue.Enqueue((ArrowData.EType)rnd.Next(0, 4));
+            }
+
+            GameManager.Instance.SetArrowList(queue);
         }
 
         public Queue<ArrowData.EType> GetList()
@@ -97,6 +144,12 @@ namespace AsciiArt
             {
                 queue.Dequeue();
                 Answer++;
+                watch.Restart();
+                Timer = dicLevelCount[Level].Item2;
+
+                //다 풀었다면 레벨업
+                if (Answer == GameManager.Instance.arrowList.Count) SetLevel(Level + 1);
+
                 return result;
             }
 

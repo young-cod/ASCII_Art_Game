@@ -58,6 +58,7 @@ namespace AsciiArt
 
         readonly float returnTimer = 5f;
         float timer;
+
         public override void Init()
         {
             GameManager.Instance.watch.Restart();
@@ -68,15 +69,17 @@ namespace AsciiArt
         public override void Render()
         {
             int centerX = ScreenBuffer.currentW / 2;
-            ScreenBuffer.Draw(centerX - (skelton.Max(line => line.Length) / 2), 5, skelton,ConsoleColor.Red);
+            ScreenBuffer.Draw(centerX - (skelton.Max(line => line.Length) / 2), 5, skelton, ConsoleColor.Red);
             ScreenBuffer.Draw(centerX - (gameOver.Max(line => line.Length) / 2), skelton.Length + 5, gameOver, ConsoleColor.Red);
 
-            ScreenBuffer.Draw(centerX - (gameOver.Length)-9, skelton.Length + 12, $"Main screen after {timer:0.0} seconds.");
+            ScreenBuffer.Draw(centerX - (gameOver.Length) - 9, skelton.Length + 12, $"Main screen after {timer:0.0} seconds.");
+
+            //ScreenBuffer.Draw(centerX - (gameOver.Length) - 9, skelton.Length + 15, "Please Enter Any Key!");
         }
 
         public override void Update()
         {
-            timer = returnTimer - GameManager.Instance.watch.ElapsedMilliseconds/1000f;
+            timer = returnTimer - GameManager.Instance.watch.ElapsedMilliseconds / 1000f;
             if (timer < 0) SceneManager.Instance.LoadScene(EType.Main);
         }
     }

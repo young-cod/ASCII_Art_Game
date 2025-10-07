@@ -10,7 +10,10 @@ namespace AsciiArt
         const int TIMERPOSY = 2;
         const int ARROWGAP = 10;
         const int ARROW_START_POSX = 5;
-        const int ARROW_START_POSY = 5;
+        const int ARROW_START_POSY = 7;
+
+        float timer;
+        float startTimer;
 
         readonly int gameArea_Width;
         readonly int artArea_Width;
@@ -44,12 +47,7 @@ namespace AsciiArt
                 case ConsoleKey.RightArrow:
                 case ConsoleKey.DownArrow:
                     //맞혔다면
-                    if (arrowGame.CheckInputArrow(keyInfo.Key))
-                    {
-                        //맞췄다면 뭘할까?
-                    }
-                    //틀렸다면
-                    else
+                    if (!arrowGame.CheckInputArrow(keyInfo.Key))
                     {
                         //게임 오버
                         SceneManager.Instance.LoadScene(EType.GameOver);
@@ -62,28 +60,12 @@ namespace AsciiArt
             }
         }
 
-        public override void Render()
+        public override void Update()
         {
-            GameArea();
-
-            //구분선
-            for (int i = 2; i < ScreenBuffer.currentH - 2; i++)
-            {
-                Tools.WriteLineAt(ScreenBuffer.currentW/ 2 - 4, i, "|");
-            }
-
-            ArtArea();
-
-        }
-
-        private void GameArea()
-        {
-            //아직 게임 시작이 안됐다면
+            //게임 대기 중
             if (GameManager.Instance.State != GameManager.EGameState.Playing)
             {
-                float startTimer = ArrowGame.ReadyTimer - (arrowGame.watch.ElapsedMilliseconds / 1000.0f);
-                //Tools.WriteLineAt(TIMERPOSX, TIMERPOSY, $"{startTimer:0.0}초 후 게임이 시작됩니다.");
-                ScreenBuffer.Draw(TIMERPOSX, TIMERPOSY, $"{startTimer:0.0}초 후 게임이 시작됩니다.");
+                startTimer = ArrowGame.ReadyTimer - (arrowGame.watch.ElapsedMilliseconds / 1000.0f);
 
                 //게임 시작
                 if (startTimer <= 0)
@@ -96,8 +78,41 @@ namespace AsciiArt
             }
             else
             {
-                float endTimer = ArrowGame.GameOverTimer - (arrowGame.watch.ElapsedMilliseconds / 1000.0f);
-                Tools.WriteLineAt(TIMERPOSX, TIMERPOSY, $"남은 시간 : {endTimer:0.0}");
+                timer = arrowGame.Timer - arrowGame.watch.ElapsedMilliseconds / 1000.0f;
+                //타이머가 종료되었다면
+                if (timer < 0)
+                {
+                    SceneManager.Instance.LoadScene(EType.GameOver);
+                }
+            }
+        }
+
+        public override void Render()
+        {
+            GameArea();
+
+            //구분선
+            for (int i = 2; i < ScreenBuffer.currentH - 2; i++)
+            {
+                Tools.WriteLineAt(ScreenBuffer.currentW / 2 - 4, i, "|");
+            }
+
+            ArtArea();
+
+        }
+
+        private void GameArea()
+        {
+            //아직 게임 시작이 안됐다면
+            if (GameManager.Instance.State != GameManager.EGameState.Playing)
+            {
+                Tools.WriteLineAt(TIMERPOSX, TIMERPOSY, $"{startTimer:0.0}초 후 게임이 시작됩니다.");
+            }
+            else
+            {
+                Tools.WriteLineAt(TIMERPOSX, TIMERPOSY, $"현재 레벨 : {arrowGame.Level}");
+                Tools.WriteLineAt(TIMERPOSX, TIMERPOSY + 1, $"스 코 어  : {arrowGame.Score:0.0}");
+                Tools.WriteLineAt(TIMERPOSX, TIMERPOSY + 2, $"남은 시간 : {timer:0.0}");
                 //ScreenBuffer.Draw(TIMERPOSX, TIMERPOSY, $"남은 시간 : {endTimer:0.0}");
 
                 //ScreenBuffer.Draw(5, 5, ArrowData.LeftArrow);
@@ -133,7 +148,7 @@ namespace AsciiArt
                     }
                     //Console.ForegroundColor = ConsoleColor.Green;
                     //Tools.ArtLineAllRenderAt(posX, posCheckY, ArrowData.Check);
-                    ScreenBuffer.Draw(posX, posCheckY, ArrowData.Success,ConsoleColor.Green);
+                    ScreenBuffer.Draw(posX, posCheckY, ArrowData.Success, ConsoleColor.Green);
                     //Console.ResetColor();
                 }
             }
