@@ -62,6 +62,7 @@
     <Compile Include="SceneManager.cs" />
     <Compile Include="ScreenBuffer.cs" />
     <Compile Include="Singleton.cs" />
+    <Compile Include="SuccessScene.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

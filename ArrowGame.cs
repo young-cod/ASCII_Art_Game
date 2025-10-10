@@ -175,9 +175,9 @@ namespace AsciiArt
                 //다 풀었다면 레벨업
                 if (Answer == GameManager.Instance.arrowList.Count)
                 {
-                    ArtManager.Instance.Timer -= Level * 100;
-                    if (ArtManager.Instance.Timer <= 1000) ArtManager.Instance.Timer = 1000;
-                    //ArtManager.Instance.BlurToArt();
+                    //ArtManager.Instance.Timer -= Level * 100;
+                    //if (ArtManager.Instance.Timer <= 1000) ArtManager.Instance.Timer = 1000;
+                    ArtManager.Instance.BlurToArt();
                     SetLevel(Level + 1);
                 }
 

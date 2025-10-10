@@ -44,6 +44,7 @@ namespace AsciiArt
                 case Scene.EType.Game:return new GameScene();
                 case Scene.EType.ArtBook:return new ArtBookScene();
                 case Scene.EType.GameOver: return new GameOverScene();
+                case Scene.EType.Success: return new SuccessScene(ArtManager.Instance.currentArt);
                 default:
                     return null;
             }

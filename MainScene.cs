@@ -29,7 +29,6 @@ namespace AsciiArt
         };
         readonly string startString = "시작하기";
         readonly string artBook = "아트북";
-        readonly string achievement = "업적";
         readonly string endString = "끝내기";
         readonly string[] selectStr = new string[] { "▶", "◀" };
 
@@ -54,6 +53,7 @@ namespace AsciiArt
                     if (Menu < EMENU.count - 1) Menu++;
                     break;
                 case ConsoleKey.Enter:
+                    if ((int)Menu == 3) Environment.Exit(0);
                     SceneManager.Instance.LoadScene((Scene.EType)Menu);
                     break;
             }
@@ -102,7 +102,7 @@ namespace AsciiArt
             Tools.WriteLineAt(windowCenterX, startPosY, startString);
 
             //아트북 문자열 위치 렌더링
-            Tools.WriteLineAt(windowCenterX, artBookPosY, artBook);
+            //Tools.WriteLineAt(windowCenterX, artBookPosY, artBook);
 
 
             //끝내기 문자열 위치 렌더링

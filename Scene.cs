@@ -11,7 +11,7 @@ namespace AsciiArt
     abstract class Scene
     {
         //씬 타입
-        public enum EType { Main, Game, ArtBook ,GameOver }
+        public enum EType { Main, Game, ArtBook ,GameOver,Success }
         public EType Type { get; protected set; }
 
 

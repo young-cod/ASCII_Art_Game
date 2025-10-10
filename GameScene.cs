@@ -15,11 +15,9 @@ namespace AsciiArt
         float timer;
         float startTimer;
 
-        readonly int gameArea_Width;
-        readonly int artArea_Width;
-
         Queue<ArrowData.EType> arrowQueue = new Queue<ArrowData.EType>();
         ArrowGame arrowGame;
+        Random rnd = new Random();
         public override void Init()
         {
             GameManager.Instance.watch.Restart();
@@ -32,7 +30,8 @@ namespace AsciiArt
             arrowGame = new ArrowGame(1);
             arrowGame.Init();
 
-            string[] artLine = PokemonData.AllPokemon[PokemonData.Name.Snorlax].ArtLine;
+            int idx = rnd.Next(0, (int)PokemonData.Name.Count);
+            string[] artLine = PokemonData.AllPokemon[(PokemonData.Name)idx].ArtLine;
             ArtManager.Instance.ArtToBlur(artLine);
         }
 
@@ -67,6 +66,9 @@ namespace AsciiArt
 
         public override void Update()
         {
+            //게임 클리어
+            if (ArtManager.Instance.isClear) SceneManager.Instance.LoadScene(EType.Success);
+
             //게임 대기 중
             if (GameManager.Instance.State != GameManager.EGameState.Playing)
             {
@@ -92,11 +94,12 @@ namespace AsciiArt
 
                 //blurtoart
                 //Debug.Log($"{ArtManager.Instance.Timer},{GameManager.Instance.watch.ElapsedMilliseconds}");
-                if (ArtManager.Instance.Timer <= GameManager.Instance.watch.ElapsedMilliseconds)
-                {
-                    GameManager.Instance.watch.Restart();
-                    ArtManager.Instance.BlurToArt();
-                }
+                //자동으로 시간에 따라 이미지를 선명하게 변경
+                //if (ArtManager.Instance.Timer <= GameManager.Instance.watch.ElapsedMilliseconds)
+                //{
+                //    GameManager.Instance.watch.Restart();
+                //    ArtManager.Instance.BlurToArt();
+                //}
             }
         }
 
