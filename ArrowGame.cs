@@ -107,7 +107,7 @@ namespace AsciiArt
         public void SetLevel(int lvl)
         {
             Level = lvl;
-            
+
             int arrowCnt = dicLevelCount[Level].Item1;
             Timer = dicLevelCount[Level].Item2;
             Answer = 0;
@@ -122,6 +122,30 @@ namespace AsciiArt
             }
 
             GameManager.Instance.SetArrowList(queue);
+        }
+
+        public int CalcArrowScore(int currentLevel)
+        {
+            float timeRemaining = Timer - watch.ElapsedMilliseconds / 1000f;
+            // 시간 내에 맞추지 못했거나 (타이머가 0 이하), 너무 오래 걸렸으면 보너스는 0
+            if (timeRemaining <= 0)
+            {
+                return 10; // 기본 점수만 지급
+            }
+
+            // 보너스 배율 결정
+            float bonusMultiplier;
+
+            if (currentLevel <= 10) bonusMultiplier = 1;
+            else if (currentLevel <= 20) bonusMultiplier = 1.5f;
+            else if (currentLevel <= 30) bonusMultiplier = 2;
+            else bonusMultiplier = 3; // 31~40 레벨
+
+            // 점수 계산
+            int baseScore = 10;
+            int bonusScore = (int)(timeRemaining * bonusMultiplier);
+
+            return baseScore + bonusScore;
         }
 
         public Queue<ArrowData.EType> GetList()
@@ -146,9 +170,16 @@ namespace AsciiArt
                 Answer++;
                 watch.Restart();
                 Timer = dicLevelCount[Level].Item2;
+                Score += CalcArrowScore(Level);
 
                 //다 풀었다면 레벨업
-                if (Answer == GameManager.Instance.arrowList.Count) SetLevel(Level + 1);
+                if (Answer == GameManager.Instance.arrowList.Count)
+                {
+                    ArtManager.Instance.Timer -= Level * 100;
+                    if (ArtManager.Instance.Timer <= 1000) ArtManager.Instance.Timer = 1000;
+                    //ArtManager.Instance.BlurToArt();
+                    SetLevel(Level + 1);
+                }
 
                 return result;
             }

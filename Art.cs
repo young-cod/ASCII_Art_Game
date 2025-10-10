@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace AsciiArt
 {
-    enum ArtDiscoveryState{
+    enum ArtDiscoveryState
+    {
         Locked, Discovered
     }
 
-    enum ArtType
-    {
-        Pokemon, Digimon
-    }
+
 
     abstract class Art
     {
@@ -23,14 +21,17 @@ namespace AsciiArt
 
         public string Name { get; }
         public int UnlockScore { get; }
+        public int MaxScore { get; }
         public string[] ArtLine { get; }
 
         public ArtDiscoveryState State { get; set; } = ArtDiscoveryState.Locked;
 
-        public Art(string name, int unlockScore, string[] artLine){
+        public Art(string name, int unlockScore, int maxScore, string[] artLine)
+        {
             Name = name;
             UnlockScore = unlockScore;
             ArtLine = artLine;
+            MaxScore = maxScore;
         }
     }
 }

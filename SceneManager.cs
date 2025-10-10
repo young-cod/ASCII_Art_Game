@@ -42,9 +42,7 @@ namespace AsciiArt
             {
                 case Scene.EType.Main:return new MainScene();
                 case Scene.EType.Game:return new GameScene();
-                case Scene.EType.ArtBook:
-                case Scene.EType.DetailArtBook:
-                case Scene.EType.Achievement:
+                case Scene.EType.ArtBook:return new ArtBookScene();
                 case Scene.EType.GameOver: return new GameOverScene();
                 default:
                     return null;

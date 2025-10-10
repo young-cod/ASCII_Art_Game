@@ -61,6 +61,8 @@ namespace AsciiArt
 
         public override void Init()
         {
+            Type = EType.GameOver;
+
             GameManager.Instance.watch.Restart();
             GameManager.Instance.State = GameManager.EGameState.GameOver;
             //SceneManager.Instance.LoadScene(EType.Main);

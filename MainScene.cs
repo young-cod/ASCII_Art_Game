@@ -9,7 +9,7 @@ namespace AsciiArt
 {
     class MainScene : Scene, IInputHandler
     {
-        public enum EMENU { None, Playing, ArtBook, Achievement, End, count }
+        public enum EMENU { None, Playing, ArtBook, End, count }
         EMENU Menu { get; set; }
         readonly string[] title = new string[] {
 " _____                                                                                                  _____ ",
@@ -38,7 +38,6 @@ namespace AsciiArt
 
         int startPosY;
         int artBookPosY;
-        int achievementPosY;
         int endPosY;
 
         //인풋핸들러
@@ -66,7 +65,6 @@ namespace AsciiArt
             {
                 case EMENU.Playing: return startPosY;
                 case EMENU.ArtBook: return artBookPosY;
-                case EMENU.Achievement: return achievementPosY;
                 case EMENU.End: return endPosY;
                 default: return selectPosY;
             }
@@ -80,8 +78,7 @@ namespace AsciiArt
             selectPosY = title.Length + 15;
             startPosY = selectPosY;
             artBookPosY = startPosY + 3;
-            achievementPosY = artBookPosY + 3;
-            endPosY = achievementPosY + 3;
+            endPosY = artBookPosY + 3;
 
             InputManager.Instance.SetHandler(this);
         }
@@ -107,8 +104,6 @@ namespace AsciiArt
             //아트북 문자열 위치 렌더링
             Tools.WriteLineAt(windowCenterX, artBookPosY, artBook);
 
-            //업적 문자열 위치 렌더링
-            Tools.WriteLineAt(windowCenterX, achievementPosY, achievement);
 
             //끝내기 문자열 위치 렌더링
             Tools.WriteLineAt(windowCenterX, endPosY, endString);

@@ -22,6 +22,8 @@ namespace AsciiArt
         ArrowGame arrowGame;
         public override void Init()
         {
+            GameManager.Instance.watch.Restart();
+
             Type = EType.Game;
             InputManager.Instance.SetHandler(this);
             //GameManager.Instance.State = GameManager.EGameState.Pause;
@@ -29,6 +31,9 @@ namespace AsciiArt
             //게임 세팅
             arrowGame = new ArrowGame(1);
             arrowGame.Init();
+
+            string[] artLine = PokemonData.AllPokemon[PokemonData.Name.Snorlax].ArtLine;
+            ArtManager.Instance.ArtToBlur(artLine);
         }
 
 
@@ -84,6 +89,14 @@ namespace AsciiArt
                 {
                     SceneManager.Instance.LoadScene(EType.GameOver);
                 }
+
+                //blurtoart
+                //Debug.Log($"{ArtManager.Instance.Timer},{GameManager.Instance.watch.ElapsedMilliseconds}");
+                if (ArtManager.Instance.Timer <= GameManager.Instance.watch.ElapsedMilliseconds)
+                {
+                    GameManager.Instance.watch.Restart();
+                    ArtManager.Instance.BlurToArt();
+                }
             }
         }
 
@@ -111,7 +124,7 @@ namespace AsciiArt
             else
             {
                 Tools.WriteLineAt(TIMERPOSX, TIMERPOSY, $"현재 레벨 : {arrowGame.Level}");
-                Tools.WriteLineAt(TIMERPOSX, TIMERPOSY + 1, $"스 코 어  : {arrowGame.Score:0.0}");
+                Tools.WriteLineAt(TIMERPOSX, TIMERPOSY + 1, $"스 코 어  : {arrowGame.Score:0.0} + {arrowGame.CalcArrowScore(arrowGame.Level)}          ");
                 Tools.WriteLineAt(TIMERPOSX, TIMERPOSY + 2, $"남은 시간 : {timer:0.0}");
                 //ScreenBuffer.Draw(TIMERPOSX, TIMERPOSY, $"남은 시간 : {endTimer:0.0}");
 
@@ -156,13 +169,9 @@ namespace AsciiArt
 
         private void ArtArea()
         {
-            string[] artLine = PokemonData.AllPokemon["Namolbbami"].ArtLine;
-            int height = PokemonData.AllPokemon["Namolbbami"].ArtLine.Length;
-            for (int i = 2; i < height + 2; i++)
-            {
-                Tools.WriteLineAt(ScreenBuffer.currentW / 2 - 5, i, artLine[i]);
+            if (GameManager.Instance.State != GameManager.EGameState.Playing) return;
 
-            }
+            ScreenBuffer.Draw(ScreenBuffer.currentW / 2, 5, ArtManager.Instance.BlurArt);
         }
     }
 }

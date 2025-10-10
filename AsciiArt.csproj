@@ -46,6 +46,7 @@
     <Compile Include="ArrowData.cs" />
     <Compile Include="ArrowGame.cs" />
     <Compile Include="Art.cs" />
+    <Compile Include="ArtBookScene.cs" />
     <Compile Include="ArtManager.cs" />
     <Compile Include="EasyTool.cs" />
     <Compile Include="GameManager.cs" />

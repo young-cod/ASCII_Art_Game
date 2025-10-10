@@ -8,6 +8,6 @@ namespace AsciiArt
 {
     internal class Pokemon : Art
     {
-        public Pokemon(string name, int unlockScore, string[] artLine) : base(name, unlockScore, artLine) { }
+        public Pokemon(string name, int unlockScore,int maxScore, string[] artLine) : base(name, unlockScore,maxScore, artLine) { }
     }
 }
